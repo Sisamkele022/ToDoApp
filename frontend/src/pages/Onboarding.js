@@ -1,35 +1,12 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { FaLeaf, FaHeartbeat, FaRunning, FaCheckCircle, FaRegCalendarCheck } from 'react-icons/fa';
+import { FaLeaf, FaHeartbeat, FaRunning, FaCheckCircle, FaRegCalendarCheck, FaUserCircle } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import { Player } from '@lottiefiles/react-lottie-player';
-import Particles from 'react-tsparticles';
-import { loadFull } from 'tsparticles';
 import { Parallax } from 'react-parallax';
+import styled, { keyframes } from 'styled-components';
 
-// Particles configuration
-const particlesInit = async (main) => {
-  await loadFull(main);
-};
-
-const particlesOptions = {
-  particles: {
-    number: { value: 40 },
-    size: { value: 4 },
-    move: { speed: 1, direction: 'top', out_mode: 'out' },
-    shape: { type: 'circle' },
-    opacity: { value: 0.5 },
-    line_linked: { enable: false },
-  },
-  interactivity: {
-    events: {
-      onHover: { enable: true, mode: 'repulse' },
-      onClick: { enable: true, mode: 'push' },
-    },
-  },
-};
-
+// Onboarding Component
 const Onboarding = () => {
   const navigate = useNavigate();
 
@@ -37,10 +14,18 @@ const Onboarding = () => {
     navigate('/home');
   };
 
+  const navigateToProfile = () => {
+    navigate('/profile');
+  };
+
   return (
     <Parallax bgImage="https://source.unsplash.com/1600x900/?nature,wellness" strength={300}>
       <OnboardingContainer>
-        <Particles id="tsparticles" init={particlesInit} options={particlesOptions} />
+        {/* Profile Icon */}
+        <ProfileIcon onClick={navigateToProfile}>
+          <FaUserCircle size={36} color="#fff" />
+        </ProfileIcon>
+
         <GlassCard
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -132,6 +117,20 @@ const OnboardingContainer = styled.div`
   overflow: hidden;
   position: relative;
   padding: 20px;
+  box-shadow: inset 0 0 200px rgba(0, 0, 0, 0.3); // Adding a shadow for depth
+`;
+
+const ProfileIcon = styled.div`
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  cursor: pointer;
+  z-index: 10;
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
 
 const GlassCard = styled(motion.div)`
@@ -148,6 +147,10 @@ const GlassCard = styled(motion.div)`
   text-align: center;
   margin: auto;
   animation: ${floatParticles} 6s ease-in-out infinite;
+  transition: transform 0.3s ease;
+  &:hover {
+    transform: scale(1.05); // Subtle hover effect
+  }
 `;
 
 const Title = styled.h1`
@@ -171,6 +174,11 @@ const Subtitle = styled.p`
   color: #e0e0e0;
   margin-bottom: 20px;
   font-family: 'Poppins', sans-serif;
+  animation: fadeIn 2s ease-out;
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
 `;
 
 const ProgressBar = styled.div`
@@ -231,8 +239,7 @@ const CustomButton = styled.button`
   transition: all 0.4s;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   &:hover {
-    background: linear-gradient(135deg, #f953c6, #b91d73);
-    transform: scale(1.1);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+    background: linear-gradient(135deg, #4a00e0, #8e2de2);
+    transform: scale(1.05);
   }
 `;

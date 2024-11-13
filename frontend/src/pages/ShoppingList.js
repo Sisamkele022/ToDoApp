@@ -1,17 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const MonthlyGoals = () => {
+const ShoppingList = () => {
   return (
     <PageContainer>
-      <PageTitle>Monthly Goals</PageTitle>
-      <p>This is the Monthly Goals page where you can set and track your goals for the month.</p>
-      {/* Add your monthly goals content here */}
+      <PageTitle>Shopping List</PageTitle>
+      <p>This is the Shopping List page where you can manage your shopping items.</p>
+      {/* Add your shopping list content here */}
     </PageContainer>
   );
 };
 
-export default MonthlyGoals;
+export default ShoppingList;
 
 const PageContainer = styled.div`
   display: flex;
