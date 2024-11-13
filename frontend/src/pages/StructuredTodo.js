@@ -1,47 +1,121 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { FaTrashAlt, FaCheckCircle, FaClock } from 'react-icons/fa'; // Clean icons from React Icons
+import Confetti from 'react-confetti';
 
 const StructuredTodo = () => {
-  const tasks = [
-    { time: "6:00 AM", task: "Wake up & hydrate", reminder: "Drink a glass of water" },
-    { time: "6:10 AM", task: "Morning prayer", reminder: "Start your day with gratitude" },
-    { time: "6:30 AM", task: "Exercise or stretch", reminder: "Boost your energy" },
-    { time: "7:00 AM", task: "Shower and get ready", reminder: "" },
-    { time: "7:30 AM", task: "Prepare and eat breakfast", reminder: "A balanced meal is key" },
-    { time: "8:00 AM", task: "Commute to work", reminder: "Check traffic updates" },
-    { time: "9:00 AM", task: "Clock in at work", reminder: "Start your workday" },
-    { time: "9:15 AM", task: "Make a morning tea or coffee", reminder: "Grab a quick refreshment" },
-    { time: "9:30 AM", task: "Attend morning stand-up meeting", reminder: "Prepare updates" },
-    { time: "10:00 AM", task: "Respond to important emails", reminder: "Prioritize urgent ones" },
-    { time: "10:30 AM", task: "Focus on morning work tasks", reminder: "" },
-    { time: "12:00 PM", task: "Take a short break", reminder: "Stretch and hydrate" },
-    { time: "12:15 PM", task: "Continue with project work", reminder: "Stay focused" },
-    { time: "1:00 PM", task: "Lunch break", reminder: "Enjoy your meal" },
-    { time: "2:00 PM", task: "Afternoon tasks and meetings", reminder: "Be punctual" },
-    { time: "4:00 PM", task: "Prepare daily report or updates", reminder: "Summarize achievements" },
-    { time: "5:00 PM", task: "Wrap up and prepare for next day", reminder: "Organize tomorrow’s tasks" },
-    { time: "5:15 PM", task: "Clock out and commute home", reminder: "Drive safely" },
-    { time: "6:00 PM", task: "Prepare and eat dinner", reminder: "A nutritious meal" },
-    { time: "7:00 PM", task: "Evening relaxation (e.g., read or watch TV)", reminder: "Unwind and enjoy" },
-    { time: "8:30 PM", task: "Evening skincare or self-care routine", reminder: "Take time for yourself" },
-    { time: "9:00 PM", task: "Plan tasks for the next day", reminder: "Write down your goals" },
-    { time: "10:00 PM", task: "Go to bed and get a restful sleep", reminder: "Good night!" },
-  ];
+  const [completedTasks, setCompletedTasks] = useState([]);
+  const [taskList, setTaskList] = useState({
+    morning: [
+      { task: "Wake up", time: "6:00 AM" },
+      { task: "Pray", time: "6:30 AM" },
+      { task: "Exercise", time: "7:00 AM" },
+      { task: "Breakfast", time: "8:00 AM" },
+      { task: "Get Ready", time: "8:30 AM" },
+    ],
+    day: [
+      { task: "Go to Work", time: "9:00 AM" },
+      { task: "Clock In", time: "9:30 AM" },
+      { task: "Make Tea", time: "10:00 AM" },
+      { task: "Standup Meeting", time: "10:30 AM" },
+      { task: "Work", time: "11:00 AM - 5:00 PM" },
+    ],
+    evening: [
+      { task: "Leave Work", time: "5:30 PM" },
+      { task: "Go Home", time: "6:00 PM" },
+      { task: "Make Supper", time: "7:00 PM" },
+      { task: "Relax and Unwind", time: "8:00 PM" },
+      { task: "Sleep", time: "10:00 PM" }
+    ]
+  });
+
+  const [confettiVisible, setConfettiVisible] = useState(false);
+
+  const handleTaskCompletion = (task, timeOfDay) => {
+    setCompletedTasks([...completedTasks, task]);
+    setTaskList({
+      ...taskList,
+      [timeOfDay]: taskList[timeOfDay].filter(item => item.task !== task.task)
+    });
+    setConfettiVisible(true);
+
+    // Hide confetti after a few seconds
+    setTimeout(() => {
+      setConfettiVisible(false);
+    }, 5000);
+  };
 
   return (
     <PageContainer>
-      <PageTitle>Structured To-Do</PageTitle>
-      <TaskList>
-        {tasks.map((item, index) => (
-          <TaskItem key={index}>
-            <TimeSlot>{item.time}</TimeSlot>
-            <TaskDetails>
-              <TaskName>{item.task}</TaskName>
-              {item.reminder && <Reminder>{item.reminder}</Reminder>}
-            </TaskDetails>
-          </TaskItem>
+      <PageTitle>Structured To-Do List</PageTitle>
+
+      {/* Confetti on task completion */}
+      {confettiVisible && <Confetti width={window.innerWidth} height={window.innerHeight} />}
+
+      <TaskSectionsContainer>
+        <TaskSection>
+          <SectionTitle>Morning</SectionTitle>
+          <TaskList>
+            {taskList.morning.map((task, index) => (
+              <TaskItem key={index} onClick={() => handleTaskCompletion(task, 'morning')}>
+                <IconWrapper>
+                  <FaClock />
+                </IconWrapper>
+                <TaskText>{task.time} - {task.task}</TaskText>
+                <CompletionIcon>
+                  <FaCheckCircle />
+                </CompletionIcon>
+              </TaskItem>
+            ))}
+          </TaskList>
+        </TaskSection>
+
+        <TaskSection>
+          <SectionTitle>Day</SectionTitle>
+          <TaskList>
+            {taskList.day.map((task, index) => (
+              <TaskItem key={index} onClick={() => handleTaskCompletion(task, 'day')}>
+                <IconWrapper>
+                  <FaClock />
+                </IconWrapper>
+                <TaskText>{task.time} - {task.task}</TaskText>
+                <CompletionIcon>
+                  <FaCheckCircle />
+                </CompletionIcon>
+              </TaskItem>
+            ))}
+          </TaskList>
+        </TaskSection>
+
+        <TaskSection>
+          <SectionTitle>Evening</SectionTitle>
+          <TaskList>
+            {taskList.evening.map((task, index) => (
+              <TaskItem key={index} onClick={() => handleTaskCompletion(task, 'evening')}>
+                <IconWrapper>
+                  <FaClock />
+                </IconWrapper>
+                <TaskText>{task.time} - {task.task}</TaskText>
+                <CompletionIcon>
+                  <FaCheckCircle />
+                </CompletionIcon>
+              </TaskItem>
+            ))}
+          </TaskList>
+        </TaskSection>
+      </TaskSectionsContainer>
+
+      <CompletedTasksTitle>Completed Tasks</CompletedTasksTitle>
+      <TrashBin>
+        {completedTasks.map((task, index) => (
+          <CompletedTaskItem key={index}>
+            <TaskText>{task.time} - {task.task}</TaskText>
+            <DeleteButton onClick={() => setCompletedTasks(completedTasks.filter((t) => t !== task))}>
+              <FaTrashAlt />
+            </DeleteButton>
+          </CompletedTaskItem>
         ))}
-      </TaskList>
+      </TrashBin>
     </PageContainer>
   );
 };
@@ -57,60 +131,139 @@ const PageContainer = styled.div`
   justify-content: center;
   padding: 40px;
   text-align: center;
-  background-color: #fef9ff;
+  height: 100vh;
+  background-color: #fef2f8; /* soft pastel pink background */
+  overflow: hidden;
+  font-family: 'Georgia', serif;
+  box-sizing: border-box;
+
+  /* Transparent Scrollbars */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
 `;
 
 const PageTitle = styled.h1`
-  font-size: 3rem;
-  color: #7f56d9;
+  font-size: 3.2rem;
+  color: #d17b9e;
   margin-bottom: 20px;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Dancing Script', cursive;
+`;
+
+const TaskSectionsContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+  margin-bottom: 30px;
+  max-width: 1200px;
+`;
+
+const TaskSection = styled.div`
+  width: 100%;
+  max-width: 350px;
+  flex-grow: 1;
+  background-color: #fbe9e7; /* Soft blush pink */
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.05);
+  }
+`;
+
+const SectionTitle = styled.h2`
+  font-size: 2rem;
+  color: #e76f9e;
+  margin-bottom: 15px;
+  font-family: 'Lora', serif;
 `;
 
 const TaskList = styled.ul`
   list-style: none;
   padding: 0;
   margin: 0;
-  width: 100%;
-  max-width: 600px;
 `;
 
 const TaskItem = styled.li`
-  display: flex;
-  align-items: flex-start;
-  background: #f1f1f1;
-  padding: 15px 20px;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-`;
-
-const TimeSlot = styled.div`
-  font-size: 1rem;
-  color: #7f56d9;
-  font-weight: bold;
-  min-width: 70px;
-  text-align: right;
-  margin-right: 15px;
-  font-family: 'Poppins', sans-serif;
-`;
-
-const TaskDetails = styled.div`
-  flex-grow: 1;
-  text-align: left;
-`;
-
-const TaskName = styled.div`
+  background-color: #f8bbd0; /* Light pastel pink */
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 12px;
   font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &:hover {
+    background-color: #f4a6b0;
+    transform: scale(1.02);
+  }
+`;
+
+const IconWrapper = styled.div`
+  color: #f76c7c;
+  font-size: 1.5rem;
+  margin-right: 12px;
+`;
+
+const CompletionIcon = styled.div`
+  color: #8b62a3;
+  font-size: 1.5rem;
+`;
+
+const TaskText = styled.span`
+  font-size: 1.1rem;
+  font-family: 'Roboto', sans-serif;
   color: #333;
-  font-weight: bold;
+  flex-grow: 1;
+`;
+
+const CompletedTasksTitle = styled.h2`
+  font-size: 2.4rem;
+  color: #e76f9e;
+  margin-top: 30px;
   font-family: 'Lora', serif;
 `;
 
-const Reminder = styled.div`
-  font-size: 1rem;
-  color: #9c3d68;
-  font-family: 'Poppins', sans-serif;
-  margin-top: 5px;
-  font-style: italic;
+const TrashBin = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+`;
+
+const CompletedTaskItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8bbd0; /* Same pink */
+  padding: 12px 20px;
+  border-radius: 8px;
+  width: 100%;
+  margin-bottom: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+`;
+
+const DeleteButton = styled.button`
+  background: transparent;
+  border: none;
+  color: #e76f9e;
+  font-size: 1.4rem;
+  cursor: pointer;
+
+  &:hover {
+    color: #d17b9e;
+  }
 `;
