@@ -29,6 +29,8 @@ The app is built with the following technologies:
   - JWT for authentication
 
 ---
+## DEPLOYMENT LINK 🌟
+https://sisamkele022.github.io/ToDoApp/
 
 ## Demo 📸
 
