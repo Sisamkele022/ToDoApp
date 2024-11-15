@@ -1,6 +1,6 @@
-# WomanToDoApp 💪📝
+# ToDoApp 💪📝
 
-Welcome to **WomanToDoApp** — your ultimate task manager designed for busy women on the go! 💼💅 Whether you're balancing work, family, or personal projects, this app helps you stay organized and accomplish everything on your to-do list. 🎯✨
+Welcome to **ToDoApp** — your ultimate task manager designed for busy women on the go! 💼💅 Whether you're balancing work, family, or personal projects, this app helps you stay organized and accomplish everything on your to-do list. 🎯✨
 
 ---
 

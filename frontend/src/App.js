@@ -46,6 +46,8 @@ function App() {
 
 // A wrapper component for SplashScreen with redirect logic
 function SplashScreenWrapper() {
+  console.error("Splashscreen here");
+  
   const navigate = useNavigate();
 
   useEffect(() => {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 const ShoppingList = () => {
   const [item, setItem] = useState('');
@@ -8,16 +8,30 @@ const ShoppingList = () => {
   // Function to handle adding an item to the list
   const handleAddItem = () => {
     if (item) {
-      setItems([...items, item]);
+      setItems([...items, { name: item, bought: false }]);
       setItem('');
     }
+  };
+
+  // Function to toggle "bought" status
+  const toggleBought = (index) => {
+    setItems(
+      items.map((item, i) =>
+        i === index ? { ...item, bought: !item.bought } : item
+      )
+    );
+  };
+
+  // Function to delete an item
+  const deleteItem = (index) => {
+    setItems(items.filter((_, i) => i !== index));
   };
 
   return (
     <PageContainer>
       <Header>
-        <h1>🛍️ Your Shopping List</h1>
-        <p>Make your shopping experience fun and easy!</p>
+        <h1>🛍️ Your Ultimate Shopping List</h1>
+        <p>Stay organized and stress-free while shopping!</p>
       </Header>
 
       <InputContainer>
@@ -36,8 +50,11 @@ const ShoppingList = () => {
         ) : (
           <ul>
             {items.map((item, index) => (
-              <ListItem key={index}>
-                <span>{item}</span>
+              <ListItem key={index} bought={item.bought}>
+                <span onClick={() => toggleBought(index)}>
+                  {item.bought ? '✅' : '🛒'} {item.name}
+                </span>
+                <DeleteButton onClick={() => deleteItem(index)}>🗑️</DeleteButton>
               </ListItem>
             ))}
           </ul>
@@ -57,12 +74,10 @@ const PageContainer = styled.div`
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-image: url('https://source.unsplash.com/1600x900/?grocery,shop'); 
-  background-size: cover;
-  background-position: center;
+  background: linear-gradient(to bottom, #ffefba, #ffffff);
   padding: 20px;
   font-family: 'Poppins', sans-serif;
-  color: #fff;
+  color: #444;
 `;
 
 const Header = styled.div`
@@ -73,14 +88,12 @@ const Header = styled.div`
     font-size: 3rem;
     font-weight: bold;
     color: #ff4b5c;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
   }
 
   p {
     font-size: 1.2rem;
     font-weight: 600;
-    color: rgba(255, 255, 255, 0.9);
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    color: #555;
   }
 `;
 
@@ -94,18 +107,11 @@ const Input = styled.input`
   padding: 15px;
   font-size: 1.2rem;
   border-radius: 30px;
-  border: none;
+  border: 2px solid #ddd;
   outline: none;
-  width: 250px;
-  background-color: rgba(255, 255, 255, 0.8);
+  width: 300px;
+  background-color: #f9f9f9;
   color: #333;
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-
-  &:focus {
-    border: 2px solid #ff4b5c;
-    background-color: rgba(255, 255, 255, 0.95);
-  }
 `;
 
 const AddButton = styled.button`
@@ -117,51 +123,55 @@ const AddButton = styled.button`
   border-radius: 30px;
   margin-left: 10px;
   cursor: pointer;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
 
   &:hover {
     background-color: #ff3750;
-    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
-    transform: translateY(-3px);
   }
 `;
 
 const ListContainer = styled.div`
   width: 100%;
   max-width: 500px;
-  background-color: rgba(255, 255, 255, 0.85);
+  background-color: #ffffff;
   padding: 30px;
-  border-radius: 30px;
+  border-radius: 20px;
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
 `;
 
 const ListItem = styled.li`
   padding: 15px;
   font-size: 1.4rem;
-  border-bottom: 2px solid #eee;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: ${({ bought }) => (bought ? '#d4edda' : '#f8d7da')};
   border-radius: 12px;
-  transition: background-color 0.2s ease;
+  margin-bottom: 10px;
 
-  &:hover {
-    background-color: #ff4b5c;
-    color: white;
+  span {
     cursor: pointer;
   }
 
   &:last-child {
-    border-bottom: none;
+    margin-bottom: 0;
+  }
+`;
+
+const DeleteButton = styled.button`
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+
+  &:hover {
+    color: #ff4b5c;
   }
 `;
 
 const EmptyMessage = styled.p`
   font-size: 1.5rem;
   text-align: center;
-  color: #ff4b5c;
+  color: #555;
   font-style: italic;
   margin-top: 20px;
 `;
