@@ -8,32 +8,31 @@ const WorkoutRoutine = () => {
 
   return (
     <WorkoutContainer>
-      <Overlay />
       <Title>Take Control of Your Fitness Journey</Title>
       <Quote>"The only bad workout is the one that didn’t happen."</Quote>
       <GridWrapper>
-        <GoalButton onClick={() => navigate('/goal/fitness')} color="#a8dadc">
+        <GoalButton onClick={() => navigate('/goal/fitness')} color="#FF6EC7">
           <IconWrapper>
             <FaDumbbell />
           </IconWrapper>
           Fitness Goal
         </GoalButton>
 
-        <GoalButton onClick={() => navigate('/goal/weight-loss')} color="#ffafcc">
+        <GoalButton onClick={() => navigate('/goal/weight-loss')} color="#FF8C42">
           <IconWrapper>
             <FaRunning />
           </IconWrapper>
           Weight Loss Goal
         </GoalButton>
 
-        <GoalButton onClick={() => navigate('/goal/endurance')} color="#c9e4f7">
+        <GoalButton onClick={() => navigate('/goal/endurance')} color="#6C5B7B">
           <IconWrapper>
             <FaShieldAlt />
           </IconWrapper>
           Endurance Goal
         </GoalButton>
 
-        <GoalButton onClick={() => navigate('/goal/muscle-gain')} color="#ffd2a6">
+        <GoalButton onClick={() => navigate('/goal/muscle-gain')} color="#FFD166">
           <IconWrapper>
             <FaSmile />
           </IconWrapper>
@@ -41,21 +40,21 @@ const WorkoutRoutine = () => {
         </GoalButton>
 
         {/* New Goals */}
-        <GoalButton onClick={() => navigate('/goal/heart-health')} color="#ff6666">
+        <GoalButton onClick={() => navigate('/goal/heart-health')} color="#FF4F58">
           <IconWrapper>
             <FaHeartbeat />
           </IconWrapper>
           Heart Health
         </GoalButton>
 
-        <GoalButton onClick={() => navigate('/goal/mental-health')} color="#8e44ad">
+        <GoalButton onClick={() => navigate('/goal/mental-health')} color="#9B59B6">
           <IconWrapper>
             <FaUserTie />
           </IconWrapper>
           Mental Health
         </GoalButton>
 
-        <GoalButton onClick={() => navigate('/goal/cycling')} color="#8fd3e8">
+        <GoalButton onClick={() => navigate('/goal/cycling')} color="#61C0BF">
           <IconWrapper>
             <FaBicycle />
           </IconWrapper>
@@ -81,6 +80,12 @@ const iconAnimation = keyframes`
   100% { transform: scale(1); }
 `;
 
+const bounceEffect = keyframes`
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+`;
+
 // Styled Components
 const WorkoutContainer = styled.div`
   display: flex;
@@ -90,77 +95,67 @@ const WorkoutContainer = styled.div`
   padding: 40px;
   position: relative;
   overflow: hidden;
-  background: url('https://your-image-url-here.jpg') no-repeat center center/cover; /* Background image of a fitness app */
+  background: #FFCCE5; /* Pure pastel pink background */
   height: 100vh;
   text-align: center;
   box-sizing: border-box;
 `;
 
-const Overlay = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay for better text visibility */
-  z-index: -1;
-`;
-
 const Title = styled.h1`
-  font-size: 3.5rem;
+  font-size: 4rem;
   color: #fff;
-  font-family: 'Dancing Script', cursive;
+  font-family: 'Poppins', sans-serif;
   margin-bottom: 20px;
-  animation: ${hoverEffect} 2s ease-in-out infinite;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6); /* Stronger text shadow for better visibility */
+  animation: ${bounceEffect} 1.5s ease-in-out infinite;
+  text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+  font-weight: bold;
 `;
 
 const Quote = styled.p`
-  font-size: 1.5rem;
+  font-size: 1.7rem;
   color: #fff;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Cursive', sans-serif;
   margin-bottom: 40px;
   font-style: italic;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6); /* Stronger text shadow for better visibility */
+  text-shadow: 3px 3px 15px rgba(0, 0, 0, 0.3);
 `;
 
 const GridWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Smaller column width */
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
   width: 100%;
   max-width: 1100px;
 `;
 
 const GoalButton = styled.button`
-  padding: 40px 50px;
-  font-size: 1.7rem;
+  padding: 50px 60px;
+  font-size: 1.8rem;
   color: #fff;
   background-color: ${(props) => props.color || '#f7e1d7'};
   border: 2px solid ${(props) => props.color || '#f7e1d7'};
-  border-radius: 15px;
+  border-radius: 20px;
   cursor: pointer;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  transform: rotate(-3deg);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  transform: rotate(-5deg);
   transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
   font-family: 'Poppins', sans-serif;
   animation: ${hoverEffect} 3s ease-in-out infinite;
-  overflow: hidden;
   
   &:hover {
-    transform: rotate(-5deg) scale(1.1);
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+    transform: rotate(0deg) scale(1.1);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
     background-color: ${(props) => darkenColor(props.color || '#f7e1d7', 0.1)};
     border-color: ${(props) => darkenColor(props.color || '#f7e1d7', 0.1)};
   }
 
   &:active {
-    transform: rotate(-3deg) scale(0.98);
+    transform: rotate(-5deg) scale(0.98);
   }
 `;
 
 const IconWrapper = styled.div`
-  font-size: 3.5rem;
+  font-size: 4rem;
   margin-bottom: 15px;
   animation: ${iconAnimation} 2s ease-in-out infinite;
 `;
