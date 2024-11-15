@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 const MonthlyGoals = () => {
   const [date, setDate] = useState(new Date());
@@ -89,6 +89,23 @@ const MonthlyGoals = () => {
 
 export default MonthlyGoals;
 
+// Keyframe Animations
+const fadeIn = keyframes`
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+`;
+
+const glow = keyframes`
+  0% { box-shadow: 0 0 5px #ff85b3, 0 0 10px #ff6396; }
+  50% { box-shadow: 0 0 15px #ff85b3, 0 0 30px #ff6396; }
+  100% { box-shadow: 0 0 5px #ff85b3, 0 0 10px #ff6396; }
+`;
+
+const bounce = keyframes`
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+`;
+
 // Styled Components
 const PageContainer = styled.div`
   display: flex;
@@ -98,6 +115,7 @@ const PageContainer = styled.div`
   background: linear-gradient(135deg, #ffe6f0, #ffccff);
   min-height: 100vh;
   color: #4a154b;
+  animation: ${fadeIn} 0.8s ease-in-out;
 `;
 
 const Header = styled.div`
@@ -110,6 +128,7 @@ const PageTitle = styled.h1`
   font-weight: bold;
   color: #ff85b3;
   text-shadow: 0 0 10px #ff85b3, 0 0 20px #ff6396;
+  animation: ${glow} 3s ease-in-out infinite;
 `;
 
 const Subtitle = styled.p`
@@ -128,6 +147,7 @@ const StyledCalendar = styled(Calendar)`
   background: white;
   padding: 20px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  animation: ${bounce} 1s ease-in-out infinite;
 
   .react-calendar__tile--active {
     background: linear-gradient(135deg, #ff85b3, #ffb5c5);
@@ -180,6 +200,7 @@ const GoalItem = styled.li`
   margin-bottom: 10px;
   color: #4a154b;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  animation: ${fadeIn} 0.5s ease-out;
 `;
 
 const NoGoals = styled.p`
@@ -202,6 +223,8 @@ const GoalInput = styled.input`
   background: #ffe6f0;
   color: #4a154b;
   outline: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  animation: ${fadeIn} 0.5s ease-out;
 
   &::placeholder {
     color: #888;
@@ -218,6 +241,7 @@ const AddGoalButton = styled.button`
   border-radius: 8px;
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  animation: ${fadeIn} 0.6s ease-out, ${glow} 3s ease-in-out infinite;
 
   &:hover {
     background: linear-gradient(135deg, #ff85b3, #ff6396);
