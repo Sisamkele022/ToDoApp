@@ -40,13 +40,13 @@ Check out the app in action:
 
 ## Installation 🛠️
 
-To get started with **WomanToDoApp**, follow these steps:
+To get started with **ToDoApp**, follow these steps:
 
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/Sisamkele022/WomanToDoApp.git
-cd WomanToDoApp
+git clone https://github.com/Sisamkele022/ToDoApp.git
+cd ToDoApp
 2. Install backend dependencies
 Go to the backend directory and run the following command:
 
