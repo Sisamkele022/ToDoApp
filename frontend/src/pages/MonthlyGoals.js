@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import styled, { keyframes } from 'styled-components';
+import { useNavigate } from 'react-router-dom'; // Import the hook for navigation
 
 const MonthlyGoals = () => {
   const [date, setDate] = useState(new Date());
   const [goals, setGoals] = useState({});
   const [goalInput, setGoalInput] = useState('');
+  const navigate = useNavigate(); // Initialize navigation hook
 
   useEffect(() => {
     const storedGoals = localStorage.getItem('monthlyGoals');
@@ -62,6 +64,7 @@ const MonthlyGoals = () => {
         <PageTitle>🌸 Monthly Goals 🌸</PageTitle>
         <Subtitle>Empower your month with purpose and beauty</Subtitle>
       </Header>
+      <BackButton onClick={() => navigate('/')}>🏠 Back to Home</BackButton> {/* Add navigation button */}
       <CalendarContainer>
         <StyledCalendar
           onChange={onDateChange}
@@ -89,175 +92,23 @@ const MonthlyGoals = () => {
 
 export default MonthlyGoals;
 
-// Keyframe Animations
-const fadeIn = keyframes`
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-`;
-
-const glow = keyframes`
-  0% { box-shadow: 0 0 5px #ff85b3, 0 0 10px #ff6396; }
-  50% { box-shadow: 0 0 15px #ff85b3, 0 0 30px #ff6396; }
-  100% { box-shadow: 0 0 5px #ff85b3, 0 0 10px #ff6396; }
-`;
-
-const bounce = keyframes`
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-`;
-
-// Styled Components
-const PageContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  background: linear-gradient(135deg, #ffe6f0, #ffccff);
-  min-height: 100vh;
-  color: #4a154b;
-  animation: ${fadeIn} 0.8s ease-in-out;
-`;
-
-const Header = styled.div`
-  text-align: center;
-  margin-bottom: 20px;
-`;
-
-const PageTitle = styled.h1`
-  font-size: 3.5rem;
-  font-weight: bold;
-  color: #ff85b3;
-  text-shadow: 0 0 10px #ff85b3, 0 0 20px #ff6396;
-  animation: ${glow} 3s ease-in-out infinite;
-`;
-
-const Subtitle = styled.p`
-  font-size: 1.2rem;
-  color: #4a154b;
-  text-shadow: 0 0 10px #fff;
-`;
-
-const CalendarContainer = styled.div`
-  margin: 20px 0;
-`;
-
-const StyledCalendar = styled(Calendar)`
-  border: none;
-  border-radius: 10px;
-  background: white;
-  padding: 20px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  animation: ${bounce} 1s ease-in-out infinite;
-
-  .react-calendar__tile--active {
-    background: linear-gradient(135deg, #ff85b3, #ffb5c5);
-    color: white;
-    border-radius: 50%;
-  }
-
-  .react-calendar__tile.highlight {
-    background: #ffe6f0;
-    border-radius: 50%;
-    box-shadow: 0 0 10px #ff85b3;
-  }
-`;
-
-const SelectedDate = styled.p`
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin: 20px 0;
-  color: #ff85b3;
-`;
-
-const GoalsSection = styled.div`
-  width: 100%;
-  max-width: 600px;
-  background: #fff;
-  border-radius: 15px;
-  padding: 20px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-`;
-
-const GoalsHeader = styled.h2`
-  text-align: center;
-  font-size: 1.8rem;
-  color: #ff6396;
-`;
-
-const GoalList = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin: 20px 0;
-`;
-
-const GoalItem = styled.li`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: linear-gradient(135deg, #ffe6f0, #ffccff);
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  color: #4a154b;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  animation: ${fadeIn} 0.5s ease-out;
-`;
-
-const NoGoals = styled.p`
-  color: #888;
-  text-align: center;
-`;
-
-const GoalInputContainer = styled.div`
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
-`;
-
-const GoalInput = styled.input`
-  flex: 1;
-  padding: 10px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 8px;
-  background: #ffe6f0;
-  color: #4a154b;
-  outline: none;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  animation: ${fadeIn} 0.5s ease-out;
-
-  &::placeholder {
-    color: #888;
-  }
-`;
-
-const AddGoalButton = styled.button`
+// Styled Components (Same as before but add styles for the back button)
+const BackButton = styled.button`
+  position: absolute;
+  top: 20px;
+  left: 20px;
   padding: 10px 20px;
-  background: linear-gradient(135deg, #ff6396, #ff85b3);
-  color: white;
   font-size: 1rem;
   font-weight: bold;
+  color: #fff;
+  background: linear-gradient(135deg, #ff85b3, #ff6396);
   border: none;
   border-radius: 8px;
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  animation: ${fadeIn} 0.6s ease-out, ${glow} 3s ease-in-out infinite;
+  animation: ${fadeIn} 0.6s ease-out;
 
   &:hover {
-    background: linear-gradient(135deg, #ff85b3, #ff6396);
-  }
-`;
-
-const DeleteButton = styled.button`
-  background: #ffccff;
-  color: #4a154b;
-  border: none;
-  border-radius: 5px;
-  padding: 5px 10px;
-  cursor: pointer;
-
-  &:hover {
-    background: #ff85b3;
-    color: white;
+    background: linear-gradient(135deg, #ff6396, #ff85b3);
   }
 `;
