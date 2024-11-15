@@ -45,11 +45,19 @@ const RelaxedTodo = () => {
     const savedTasks = localStorage.getItem('tasks');
     return savedTasks ? JSON.parse(savedTasks) : [];
   });
+  const [completedTasks, setCompletedTasks] = useState(() => {
+    const savedCompletedTasks = localStorage.getItem('completedTasks');
+    return savedCompletedTasks ? JSON.parse(savedCompletedTasks) : [];
+  });
   const [suggestedTasks, setSuggestedTasks] = useState(initialSuggestedTasks);
 
   useEffect(() => {
     localStorage.setItem('tasks', JSON.stringify(tasks));
   }, [tasks]);
+
+  useEffect(() => {
+    localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
+  }, [completedTasks]);
 
   const handleAddTask = (task) => {
     setTasks([...tasks, { text: task, completed: false }]);
@@ -57,11 +65,26 @@ const RelaxedTodo = () => {
   };
 
   const handleCompleteTask = (task) => {
-    setTasks(tasks.map((t) => (t.text === task.text ? { ...t, completed: !t.completed } : t)));
+    const updatedTask = { ...task, completed: !task.completed };
+    setTasks(tasks.map((t) => (t.text === task.text ? updatedTask : t)));
+    if (!task.completed) {
+      const completionDate = new Date().toISOString();
+      setCompletedTasks([
+        ...completedTasks,
+        { text: task.text, completionDate },
+      ]);
+    } else {
+      setCompletedTasks(
+        completedTasks.filter((t) => t.text !== task.text)
+      );
+    }
   };
 
   const handleDeleteTask = (task) => {
     setTasks(tasks.filter((t) => t.text !== task.text));
+    setCompletedTasks(
+      completedTasks.filter((t) => t.text !== task.text)
+    );
   };
 
   return (
@@ -87,12 +110,31 @@ const RelaxedTodo = () => {
         </Column>
         <Column>
           <SectionTitle>Suggested Relaxation Activities</SectionTitle>
-          <TaskList>
+          <ScrollableGrid>
             {suggestedTasks.map((task, index) => (
-              <TaskItem key={index} onClick={() => handleAddTask(task)}>
-                <TaskText>{task}</TaskText>
-              </TaskItem>
+              <TaskGridItem key={index} onClick={() => handleAddTask(task)}>
+                {task}
+              </TaskGridItem>
             ))}
+          </ScrollableGrid>
+        </Column>
+        <Column>
+          <SectionTitle>Completed Tasks</SectionTitle>
+          <TaskList>
+            {completedTasks
+              .sort(
+                (a, b) =>
+                  new Date(b.completionDate) - new Date(a.completionDate)
+              )
+              .map((task, index) => (
+                <CompletedTaskItem key={index}>
+                  {task.text} -{' '}
+                  <CompletionDate>
+                    {new Date(task.completionDate).toLocaleDateString()} at{' '}
+                    {new Date(task.completionDate).toLocaleTimeString()}
+                  </CompletionDate>
+                </CompletedTaskItem>
+              ))}
           </TaskList>
         </Column>
       </PageContainer>
@@ -105,7 +147,7 @@ export default RelaxedTodo;
 // Styled Components
 const PageWrapper = styled.div`
   height: 100vh;
-  background-color: #ffe6f2; /* Pastel pink background */
+  background-color: #ffe6f2;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -116,7 +158,7 @@ const PageWrapper = styled.div`
 const PageContainer = styled.div`
   display: flex;
   gap: 30px;
-  width: 80%;
+  width: 90%;
   max-width: 1200px;
   background: #fff;
   border-radius: 15px;
@@ -125,24 +167,22 @@ const PageContainer = styled.div`
 `;
 
 const Column = styled.div`
-  width: 50%; /* Equal width for both columns */
-  background: #f7c8d8; /* Light pink background for each column */
+  flex: 1;
+  background: #f7c8d8;
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 2.2rem;
-  font-family: 'Dancing Script', cursive;
+  font-size: 2rem;
+  color: #9c3d68;
   margin-bottom: 15px;
-  color: #9c3d68; /* Darker pink */
 `;
 
 const TaskList = styled.ul`
   list-style: none;
   padding: 0;
-  margin: 0;
 `;
 
 const TaskItem = styled.li`
@@ -150,9 +190,37 @@ const TaskItem = styled.li`
   align-items: center;
   justify-content: space-between;
   background: #f1f1f1;
-  padding: 10px 20px;
+  padding: 10px 15px;
   border-radius: 8px;
   margin-bottom: 10px;
+`;
+
+const CompletedTaskItem = styled.li`
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  background: #e1f7d5;
+  border-radius: 8px;
+`;
+
+const CompletionDate = styled.span`
+  font-size: 0.9rem;
+  color: #555;
+`;
+
+const ScrollableGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 10px;
+`;
+
+const TaskGridItem = styled.div`
+  background: #f1f1f1;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
   cursor: pointer;
   transition: background 0.3s ease;
   &:hover {
@@ -160,16 +228,13 @@ const TaskItem = styled.li`
   }
 `;
 
-const TaskText = styled.span`
-  font-size: 1.2rem;
-  font-family: 'Lora', serif;
-  color: ${(props) => (props.completed ? '#9c9c9c' : '#333')};
-  text-decoration: ${(props) => (props.completed ? 'line-through' : 'none')};
-  flex-grow: 1;
-`;
-
 const Checkbox = styled.input`
   margin-right: 15px;
+`;
+
+const TaskText = styled.span`
+  text-decoration: ${(props) => (props.completed ? 'line-through' : 'none')};
+  flex-grow: 1;
 `;
 
 const DeleteButton = styled.button`
@@ -177,8 +242,6 @@ const DeleteButton = styled.button`
   border: none;
   cursor: pointer;
   color: #f44336;
-  font-size: 1.5rem;
-  transition: color 0.3s ease;
   &:hover {
     color: #d32f2f;
   }
