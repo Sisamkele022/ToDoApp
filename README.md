@@ -36,7 +36,7 @@ https://sisamkele022.github.io/ToDoApp/
 
 Check out the app in action:
 
-![Demo](https://via.placeholder.com/800x400?text=App+Demo)
+https://www.loom.com/share/ac243a844f844ccba71dbc75a8165e5a?sid=9a0742ea-c848-4fd1-85cf-d02f13dcfb0d
 
 ---
 
